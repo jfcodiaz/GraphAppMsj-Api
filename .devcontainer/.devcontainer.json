@@ -2,14 +2,15 @@
     "name": "GraphAppMsj-Api",
     "dockerComposeFile": "../docker-compose.yml",
     "service": "node",
-    "workspaceFolder": "/app/code",  // Directorio donde se abrirá la terminal
+    "workspaceFolder": "/app/code",
     "customizations": {
       "vscode": {
         "settings": {
-          "terminal.integrated.cwd": "/app/code"  // Directorio inicial para la terminal
+          "terminal.integrated.cwd": "/app/code"
         },
         "extensions": [
-            "ms-vscode-remote.remote-containers"
+            "ms-vscode-remote.remote-containers",
+            "orsenkucher.vscode-graphql"
         ]
       }
     }

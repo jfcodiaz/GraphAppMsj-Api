@@ -12,7 +12,7 @@ services:
       - ./docker/config/dev/git/.gitconfig:/root/.gitconfig
       - .:/app
     ports:
-      - ${WEB_PORT}:3000
+      - ${WEB_PORT}:${APP_PORT}
     command: tail -f /dev/null
     env_file:
       - .env
