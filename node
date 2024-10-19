@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if ! docker network ls | grep -q "chat-network"; then
+    echo "Creating Docker network 'chat-network'...\n"
+    docker network create chat-network
+else
+    echo "Docker network 'chat-network' already exists.\n"
+fi
+
+
+echo "Starting Docker Compose...\n"
+docker compose up -d
+
+# Enter the node container
+echo "Entering the node container...\n"
+#docker exec -it $(docker ps --filter "name=node" -q) /bin/bash
+docker exec -it chat-backend sh
