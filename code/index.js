@@ -1,5 +1,12 @@
+const dotenv = require('dotenv');
 const express = require('express');
 const { ApolloServer, gql } = require('apollo-server-express');
+const mongoose = require('mongoose');
+const dotenvExpand = require('dotenv-expand');
+
+dotenv.config();
+const myEnv = dotenv.config();
+dotenvExpand.expand(myEnv);
 
 const app = express();
 const port = 3000;
@@ -23,11 +30,14 @@ app.get('/', (req, res) => {
 const server = new ApolloServer({ typeDefs, resolvers });
 
 async function startServer() {
-    await server.start();
+    await Promise.all([
+        mongoose.connect(process.env.MONGO_URI),
+        server.start()
+    ]);
     server.applyMiddleware({ app });
     app.listen({ port }, () => {
-        console.log(`xxExample app listening at http://localhost:${port}`);
-        console.log(`🚀 Server ready at http://localhost:${port}${server.graphqlPath}`)
+        console.log(`🚀 Express:       http://localhost:${port}`);
+        console.log(`🚀 Apollo Server: http://localhost:${port}${server.graphqlPath}`)
     });
   }
 
