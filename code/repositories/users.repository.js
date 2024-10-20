@@ -1,6 +1,17 @@
-const { User } = require('../models'); // Adjust the path as necessary
+const { User } = require('../models');
 
 class UserRepository {
+    async findOrCreateUser({username}) { 
+        let user = await User.findOne({ username });
+        if (user === null) {
+            user = await User.create({ username });
+
+            return user;
+        }
+        
+        return user;          
+    }
+
     async create(userData) {
         try {
             const user = await User.create(userData);

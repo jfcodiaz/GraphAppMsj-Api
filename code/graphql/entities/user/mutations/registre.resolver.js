@@ -2,10 +2,9 @@ const userRepository = require("../../../../repositories/users.repository");
 
 module.exports = {
     Mutation: {
-        register: async (_, { username }) => {
+        join: async (_, { username }) => {
             try {
-                console.log({ username });
-                const user = await userRepository.createUser({ username });
+                const user = await userRepository.findOrCreateUser({ username });
                 return user.toJSON();
             } catch (error) {
                 console.error(error);

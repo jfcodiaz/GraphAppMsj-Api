@@ -1,7 +1,7 @@
 module.exports = {
     Query: {
       hello: () => {
-        return 'Hello, world! 🌍';
+        return 'Hello, world! 🌍' + (new Date()).toISOString();
       },
     },
   };
