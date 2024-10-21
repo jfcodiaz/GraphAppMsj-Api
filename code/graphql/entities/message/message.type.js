@@ -5,5 +5,11 @@ module.exports = gql`
         id: ID!
         text: String!
         userId: String!
+        createdAt: String!
+    }
+
+    type Subscription {
+        messageCreated: Message
+        postCreated: String
     }
 `;
