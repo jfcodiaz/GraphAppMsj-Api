@@ -1,7 +1,5 @@
 const messagesRepository = require("../../../../repositories/messages.repository");
 
-const NEW_MESSAGE = 'NEW_MESSAGE';
-
 module.exports = {
     Query: {
         messages: async (_, {startDate, page, limit}) => {

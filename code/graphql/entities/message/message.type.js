@@ -6,6 +6,7 @@ module.exports = gql`
         text: String!
         userId: String!
         createdAt: String!
+        user: User!
     }
 
     type Subscription {
