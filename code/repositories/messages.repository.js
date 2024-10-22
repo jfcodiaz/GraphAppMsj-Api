@@ -4,6 +4,13 @@ class MessageRepository {
   async create(userData) {
     try {
       const message = await Message.create(userData);
+      
+      const populatedMessage = await Message.findById(message._id).populate({
+        path: 'userId',
+        as: 'user'
+      });
+      message.user = populatedMessage.userId;
+      
       return message;
     } catch (error) {
       throw new Error('Error creating message: ' + error.message);
@@ -14,17 +21,15 @@ class MessageRepository {
     try {
       const skip = (page - 1) * limit;
       const query = { createdAt: { $lt: startDate } };
-
-      // Usamos populate para obtener el usuario pero sin eliminar el userId original
+      
       const messages = await Message.find()
         .find(query)
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
         .populate({
-          path: 'userId', // El campo que contiene la referencia al usuario
-          select: '-password -otherSensitiveFields', // Campos que no quieres incluir
-          as: 'user' // Alias donde queremos que se guarde el documento del usuario
+          path: 'userId', 
+          as: 'user'
         });
 
       const transformedMessages = messages.map(message => ({
