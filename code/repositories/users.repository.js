@@ -32,7 +32,6 @@ class UserRepository {
 
     async getAll() {
         try {
-            console.log(User)
             const users = await User.find();
             return users;
         } catch (error) {
@@ -63,6 +62,14 @@ class UserRepository {
             return true;
         } catch (error) {
             throw new Error('Error deleting user: ' + error.message);
+        }
+    }
+
+    async insertMany(users) {
+        try {
+            return User.insertMany(users);
+        } catch (error) {
+            throw new Error('Error inserting users: ' + error.message);
         }
     }
 }

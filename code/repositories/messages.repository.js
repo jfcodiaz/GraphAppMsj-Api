@@ -51,6 +51,14 @@ class MessageRepository {
       throw new Error('Error fetching messages: ' + error.message);
     }
   }
+
+  async insertMany(messages) {
+    try {
+        return Message.insertMany(messages);
+    } catch (error) {
+        throw new Error('Error inserting users: ' + error.message);
+    }
+  }
 }
 
 module.exports = new MessageRepository();
