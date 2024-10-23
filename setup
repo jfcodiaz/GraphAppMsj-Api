@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ ! -f .env ]; then
+  cp .env.example .env
+  echo ".env file created from .env.example in root directory."
+else
+  echo ".env file already exists in root directory."
+fi
+cd code
+if [ ! -f .env ]; then
+  cp .env.example .env
+  echo ".env file created from .env.example in code directory."
+else
+  echo ".env file already exists in code directory."
+fi
+
+cd ..
+docker compose up

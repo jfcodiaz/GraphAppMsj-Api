@@ -1,4 +1,11 @@
 services:
+  prod:
+    build:
+      context: .
+      dockerfile: ./docker/images/node/Dockerfile
+      target: prod
+    profiles:
+      - optional
   node:
     build:
       context: .
@@ -10,14 +17,15 @@ services:
     volumes:
       - ./docker/config/dev/ssh:/root/.ssh/
       - ./docker/config/dev/git/.gitconfig:/root/.gitconfig
+      - ./docker/config/dev/node/init-script.sh:/root/init-script.sh
       - .:/app
     ports:
       - ${WEB_PORT}:${APP_PORT}
-    command: tail -f /dev/null
+    command: sh /root/init-script.sh
+    depends_on:
+      - mongo
     env_file:
       - .env
-    networks:
-      - default
 
   mongo:
     image: mongo:latest
@@ -29,8 +37,6 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
-    networks:
-      - default
 
   mongo-express:
     image: mongo-express:latest
@@ -43,12 +49,5 @@ services:
       - ME_CONFIG_MONGODB_SERVER=mongo
       - ME_CONFIG_BASICAUTH_USERNAME=${MONGO_EXPRESS_USERNAME}
       - ME_CONFIG_BASICAUTH_PASSWORD=${MONGO_EXPRESS_PASSWORD}
-    networks:
-      - default
 volumes:
   mongo-data:
-
-networks:
-  default:
-    external: true
-    name: ${PROJECT_NETWORK}
