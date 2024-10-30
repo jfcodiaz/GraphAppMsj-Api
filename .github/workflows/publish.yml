@@ -1,0 +1,32 @@
+name: Build and push Docker image to DockerHub
+
+on:
+  push:
+    push:
+      branches:
+        - chore/19-configure-docker-lastes-dev
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the repo
+      uses: actions/checkout@v4
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+    - name: Build and push to DockerHub with target dist
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./docker/images/node/Dockerfile
+        target: dist-dev 
+        push: true
+        tags: |
+          jfcodiaz/graphappmsj-api:latest-dev
