@@ -1,10 +1,10 @@
 name: Build and push Docker image to DockerHub
 
 on:
+  workflow_dispatch:
   push:
-    push:
-      branches:
-        - chore/19-configure-docker-lastes-dev
+    branches:
+      - develop
 
 jobs:
   build:
