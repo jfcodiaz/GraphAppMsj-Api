@@ -20,7 +20,7 @@ services:
       - ./docker/config/dev/node/init-script.sh:/root/init-script.sh
       - .:/app
     ports:
-      - ${WEB_PORT}:${APP_PORT}
+      - ${WEB_PORT}:4000
     command: sh /root/init-script.sh
     depends_on:
       - mongo
@@ -49,5 +49,19 @@ services:
       - ME_CONFIG_MONGODB_SERVER=mongo
       - ME_CONFIG_BASICAUTH_USERNAME=${MONGO_EXPRESS_USERNAME}
       - ME_CONFIG_BASICAUTH_PASSWORD=${MONGO_EXPRESS_PASSWORD}
+
+  dist-dev:
+    build:
+      context: .
+      dockerfile: ./docker/images/node/Dockerfile
+      target: dist-dev
+    container_name: ${PROJECT_PREFIX}-dist-dev
+    hostname: ${PROJECT_PREFIX}-dist-dev
+    ports:
+      - ${DIST_PORT_WEB_PORT}:4000
+      - ${DIST_PORT_MONGO_PORT}:27017
+    profiles:
+      - dist
+
 volumes:
   mongo-data:
