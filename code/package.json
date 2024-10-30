@@ -23,7 +23,7 @@
     "seed": "node database/seeder.js",
     "dev": "nodemon index.js"
   },
-  "author": "",
+  "author": "José Francisco Díaz Arredondo",
   "license": "GPL-3.0-only",
   "description": ""
 }
