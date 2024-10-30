@@ -10,7 +10,7 @@ ENV NODE_ENV=production
 RUN yarn install
 
 # distribution
-FROM mongo:latest AS dist
+FROM mongo:latest AS dist-dev
 
 WORKDIR /app
 
