@@ -24,7 +24,22 @@ RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
 COPY --from=build /app /app
 COPY docker/config/production-dist/supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-CMD ["/usr/bin/supervisord"]
+# Crear un grupo y usuario no root
+RUN addgroup appgroup 
+RUN useradd appuser -g appgroup
+RUN mkdir -p /var/run && chown -R appuser:appgroup /var/run
+RUN mkdir -p /var/log && chown -R appuser:appgroup /var/log
+RUN touch /var/log/supervisord.log && chown appuser:appgroup /var/log/supervisord.log
+RUN touch /var/run/supervisord.pid && chown appuser:appgroup /var/run/supervisord.pid
+RUN mkdir -p /data/db 
+RUN chown -R appuser:appgroup /data/db
+
+USER appuser
+
+EXPOSE 4000
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+
+#CMD ["/usr/bin/supervisord"]
 
 # development
 FROM base AS dev

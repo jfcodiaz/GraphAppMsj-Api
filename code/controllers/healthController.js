@@ -1,3 +1,3 @@
 module.exports = (_req, res, _next) => {
-    res.send('OK');
+    res.status(200).send({ status: 'ok' });
 }
