@@ -4,14 +4,13 @@ const initDb = require('./database');
 const app = require('express')();
 const os = require('os');
 
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-});
+const initRoutes = require('../routes');
 
 module.exports = async () => {
     await Promise.all([
         initDb(),
-        initGrapQl(app)
+        initGrapQl(app),
+        initRoutes(app),
     ]);
 
     const hostname = os.hostname();
