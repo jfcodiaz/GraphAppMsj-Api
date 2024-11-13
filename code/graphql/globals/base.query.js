@@ -1,7 +1,6 @@
 const { gql } = require('apollo-server-express');
 
 module.exports = gql`
-  
   directive @hidden on FIELD_DEFINITION
 
   type Query {
@@ -13,5 +12,4 @@ module.exports = gql`
     "Empty mutation to extend"
     _empty: String @hidden
   }
-
 `;

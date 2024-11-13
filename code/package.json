@@ -25,7 +25,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check . --log-level debug"
+    "format:check": "prettier --check ."
   },
   "author": "José Francisco Díaz Arredondo",
   "license": "GPL-3.0-only",
