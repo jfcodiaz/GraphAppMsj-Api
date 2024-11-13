@@ -1,12 +1,12 @@
-const userRepository = require("../../../../repositories/users.repository");
+const userRepository = require('../../../../repositories/users.repository');
 
 module.exports = {
-    Query: {
-        users: () => {
-            return userRepository.getAll();
-        },
+  Query: {
+    users: () => {
+      return userRepository.getAll();
     },
-    User: {
-        id: (parent) => parent._id.toString()
-    }
+  },
+  User: {
+    id: (parent) => parent._id.toString(),
+  },
 };

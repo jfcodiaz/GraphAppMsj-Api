@@ -8,6 +8,6 @@ module.exports = (app) => {
 
   router.get('/', homeController);
   router.get('/health', healthController);
-  
+
   app.use('/', router);
-}
+};

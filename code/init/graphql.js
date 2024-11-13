@@ -38,13 +38,13 @@ module.exports = {
         schema,
         context: () => {
           return { pubsub };
-        }
+        },
       },
-      wsServer
+      wsServer,
     );
 
     await apolloServer.start();
-    apolloServer.applyMiddleware({ 
+    apolloServer.applyMiddleware({
       app,
       cors: {
         origin: '*',

@@ -7,8 +7,8 @@ const mutations = loadFilesSync(path.join(__dirname, './**/*.mutation.js'));
 
 const typeDefs = [
   ...mutations,
-  ...types, 
-  loadFilesSync(path.join(__dirname, './**/*.query.js'))
+  ...types,
+  loadFilesSync(path.join(__dirname, './**/*.query.js')),
 ];
 
 const resolvers = loadFilesSync(path.join(__dirname, './**/*.resolver.js'));
