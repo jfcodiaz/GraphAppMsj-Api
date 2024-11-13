@@ -1,0 +1,54 @@
+name: CI/CD Pipeline
+
+on:
+  pull_request:
+    branches:
+      - master
+      - develop
+
+  push:
+    branches:
+      - master
+      - develop
+
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to Test'
+        required: true
+        default: master
+        type: string
+
+jobs:
+  "check_lint_and_format":
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch }}
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.yarn/cache
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: |
+          cd code
+          yarn install
+
+      - name: Run Lint
+        run: |
+          cd code
+          yarn run lint
+          yarn run format:check
