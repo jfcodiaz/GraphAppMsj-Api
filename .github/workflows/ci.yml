@@ -20,9 +20,8 @@ on:
         type: string
 
 jobs:
-  "check_lint_and_format":
+  check_lint_and_format:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -47,8 +46,65 @@ jobs:
           cd code
           yarn install
 
-      - name: Run Lint
+      - name: Run Lint and Format Check
         run: |
           cd code
           yarn run lint
           yarn run format:check
+
+  unit_tests:
+    runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:5.0
+        ports:
+          - 27017:27017
+        options: --quiet
+        env:
+          MONGO_INITDB_DATABASE: chat_test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch }}
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.yarn/cache
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: |
+          cd code
+          yarn install
+
+      - name: Set up environment file
+        run: |
+          cd code
+          cp .env.test.example .env.test
+
+      - name: Wait for MongoDB to be ready
+        run: |
+          until nc -z localhost 27017; do echo "Waiting for MongoDB..."; sleep 1; done
+
+      - name: Run Unit Tests
+        env:
+          MONGO_URI: mongodb://localhost:27017/chat_test
+        run: |
+          cd code
+          yarn run test:ci
+
+      - name: Upload Screenshots and Videos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: code/coverage
