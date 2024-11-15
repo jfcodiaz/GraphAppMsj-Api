@@ -1,3 +1,3 @@
-const startServer = require('./init/main-server');
+const { init: initServer } = require('./init/main-server');
 
-startServer();
+initServer();

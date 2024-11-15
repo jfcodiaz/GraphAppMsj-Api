@@ -1,8 +1,11 @@
-const dotenv = require('dotenv').config();
+const dotenv = require('dotenv');
 const dotenvExpand = require('dotenv-expand');
-dotenvExpand.expand(dotenv);
 
-module.exports = {
+const envFilePath = process.env.NODE_ENV === 'test' ? '.env.test' : '.env';
+const dotenvConfig = dotenv.config({ path: envFilePath });
+dotenvExpand.expand(dotenvConfig);
+
+const config = {
   port: process.env.APP_PORT || 4000,
   db: {
     host: process.env.DB_HOST || 'localhost',
@@ -10,3 +13,5 @@ module.exports = {
     user: process.env.DB,
   },
 };
+
+module.exports = config;
