@@ -5,6 +5,8 @@ const envFilePath = process.env.NODE_ENV === 'test' ? '.env.test' : '.env';
 const dotenvConfig = dotenv.config({ path: envFilePath });
 dotenvExpand.expand(dotenvConfig);
 
+require('../utils/logging/custom-console-log');
+
 const config = {
   port: process.env.APP_PORT || 4000,
   db: {
